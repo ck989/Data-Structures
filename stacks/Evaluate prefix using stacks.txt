@@ -1,0 +1,125 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 101
+
+int top = -1;
+
+
+int A[MAX_SIZE];
+
+
+
+void Push(char x)
+{
+    A[++top] = x;
+}
+
+
+void Pop()
+{    
+    if(top == -1)
+    {
+        printf("the stack is empty");
+        return;   
+    }
+    
+    
+    top--;
+
+}
+
+
+bool isempty()
+{
+    if(top == -1)
+    {
+        return true;
+    }
+    return false;
+}
+
+int EvaluatePrefix(char* exp)
+{
+   int i,len;
+   char res;
+   int op1 = 0;
+   int op2 = 0;
+
+   len = strlen(exp);
+   for(i=0; i < len ;i++)
+   {
+       if(exp[i] == 32 || exp[i] == 44) //Ascii value for space or comma
+       {
+           continue;
+       }else if(exp[i] >= 48 && exp[i] <= 57) // ASCII value for number
+       {
+           int operand = 0;
+           while(i < len && (exp[i] >= 48 && exp[i] <= 57))
+           {
+               operand = (exp[i] - '0');
+               i++;
+           }
+           i--;
+           Push(operand);
+       }else
+       {
+          op1 = A[top];
+          Pop();
+          op2 = A[top];
+          Pop();
+          
+          switch(exp[i])
+          {
+              case 43: //ASII value for +
+              res = (op2 + op1);
+              break;
+              
+              case 45: //ASCII value for -1
+              res = (op2 - op1);
+              break;
+              
+              case 42: //ASCII value for *
+              res = (op2 * op1);
+              break;
+              
+              case 47: //ASCII value for /
+              res = (op2 / op1);
+              break;
+              
+          }
+          
+          Push(res);
+       }
+   }
+   
+   return A[top];
+}
+
+
+int main()
+{
+    char str[30];
+    int res;
+    printf("enter the elements seperated by comma\n");
+    scanf("%s",str);
+    
+    res = EvaluatePrefix(str);
+    
+    printf("the result is %d",res);
+    
+    return 0;
+    
+}
+    

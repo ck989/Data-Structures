@@ -1,0 +1,105 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 101
+
+int top = -1;
+
+
+int A[MAX_SIZE];
+
+
+
+void Push(char x)
+{
+    A[++top] = x;
+}
+
+
+void Pop()
+{    
+    if(top == -1)
+    {
+        printf("the stack is empty");
+        return;   
+    }
+    top--;
+
+}
+
+
+bool isempty()
+{
+    if(top == -1)
+    {
+        return true;
+    }
+    return false;
+}
+
+
+bool istrue(char opening,char closing)
+{
+    if(opening == '(' && closing == ')') return true;
+    else if(opening == '{' && closing == '}') return true;
+    else if(opening == '[' && closing == ']') return true; 
+    return false;
+}
+
+
+bool check_balanced_parathesis(char* exp)
+{
+    int i,l = strlen(exp);
+    
+    for(i=0;i<=l-1;i++)
+    {
+        if(exp[i] == '(' || exp[i] == '{' || exp[i] == '[')
+        {
+            Push(exp[i]);
+        }
+        else if(exp[i] == ')' || exp[i] == '}' || exp[i] == ']')
+        {
+            if(top == -1 || !istrue(A[top],exp[i]))
+            {
+                return false;
+            }
+            else
+            {
+                Pop();
+            }       
+        }
+    }
+    return isempty()?true:false;
+
+}
+
+
+int main()
+{
+    char str[10];
+    printf("enter the paranthesis of your wish\n");
+    scanf("%s",str);
+    
+    if(check_balanced_parathesis(str))
+    {
+        printf("paranthesis are balanced");
+    }
+    else
+    {
+        printf("paranthesis aren't balanced");
+    }
+}
+
+
+
+
