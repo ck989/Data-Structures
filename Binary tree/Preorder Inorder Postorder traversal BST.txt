@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+struct BstNode{
+    int data;
+    struct BstNode* left;
+    struct BstNode* right;
+};
+
+struct BstNode* GetNewNode(int data)
+{
+    struct BstNode* newnode = (struct BstNode*)malloc(sizeof(struct BstNode));
+    newnode->data = data;
+    newnode->left = NULL;
+    newnode->right = NULL;
+    return newnode;
+}
+
+struct BstNode* Insert(struct BstNode* root, int data)
+{
+    if(root == NULL)
+    {
+        root = GetNewNode(data);
+    }else if(data <= root->data)
+    {
+        root->left = Insert(root->left,data);
+    }else
+    {
+        root->right = Insert(root->right,data);
+    }
+    
+    return root;
+}
+
+void Preorder(struct BstNode* root)
+{
+    if(root == NULL) return;
+    
+    printf("%d\t",root->data);
+    Preorder(root->left);
+    Preorder(root->right);
+}
+
+void Inorder(struct BstNode* root)
+{
+    if(root == NULL) return;
+    
+    Inorder(root->left);
+    printf("%d\t",root->data);
+    Inorder(root->right);
+}
+
+void Postorder(struct BstNode* root)
+{
+    if(root == NULL) return;
+    
+    Postorder(root->left);
+    Postorder(root->right);
+    printf("%d\t",root->data);
+}
+
+int main()
+{
+    struct BstNode* root = NULL;
+    
+    root = Insert(root,20);
+    root = Insert(root,30);
+    root = Insert(root,15);
+    root = Insert(root,10);
+    root = Insert(root,25);
+    root = Insert(root,22);
+    
+    printf("Preorder traversal is \n");
+    Preorder(root);
+    printf("\n");
+    printf("Inorder traversal is \n");
+    Inorder(root);
+    printf("\n");
+    printf("Postorder traversal is \n");
+    Postorder(root);
+    
+    return 0;
+}
